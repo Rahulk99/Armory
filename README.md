@@ -1,12 +1,11 @@
 
 
- █████╗ ██████╗ ███╗   ███╗ ██████╗ ██████╗ ██╗   ██╗
-██╔══██╗██╔══██╗████╗ ████║██╔═══██╗██╔══██╗╚██╗ ██╔╝
-███████║██████╔╝██╔████╔██║██║   ██║██████╔╝ ╚████╔╝ 
-██╔══██║██╔══██╗██║╚██╔╝██║██║   ██║██╔══██╗  ╚██╔╝  
-██║  ██║██║  ██║██║ ╚═╝ ██║╚██████╔╝██║  ██║   ██║   
-╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝                                                                                  
- 
+ █████  ██████  ███    ███  ██████  ██████ ██    ██ 
+██   ██ ██   ██ ████  ████ ██    ██ ██   ██ ██  ██  
+███████ ██████  ██ ████ ██ ██    ██ ██████   ████   
+██   ██ ██   ██ ██  ██  ██ ██    ██ ██   ██   ██    
+██   ██ ██   ██ ██      ██  ██████  ██   ██   ██    
+
 The Armory is a comprehensive suite of tools for network security and penetration testing, designed for use by security professionals and researchers.
 The project includes five modules, each designed to perform a specific function:
 
