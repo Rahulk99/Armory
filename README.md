@@ -22,3 +22,22 @@ The project includes five modules, each designed to perform a specific function:
 [BLOG](https://medium.com/@rahulkumarmk/creating-a-dns-spoofing-tool-with-python-a-step-by-step-guide-a3217b3c4905)
 
 The Armory project is intended for use by security professionals and researchers to test the security of networks and identify vulnerabilities.
+
+## Installation
+To install Armory, clone this repository using Git:
+
+```
+git clone https://github.com/username/armory.git
+```
+
+## Contributing
+We welcome contributions from the community. To contribute to Armory, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch with a descriptive name for your feature or bug fix
+3. Make your changes and write tests if necessary
+4. Submit a pull request to the main repository
+All contributions will be reviewed and evaluated based on their quality and relevance to the project.
+
+## License
+The Armory project is licensed under the MIT License. See the LICENSE file for more details.
