@@ -5,8 +5,7 @@ from colorama import Style
 
 '''
 Tool Writeen By:
-    Rahul Kumar
-    With love 
+    Rahul Kumar 
 '''
 from MAC_Changer import macchanger
 from Networkscanner import scanmain
