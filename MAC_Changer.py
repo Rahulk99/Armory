@@ -26,11 +26,14 @@ def get_current_mac(interface):
 		pass
 
 def get_current_ip(interface):
+	try:
 		output = subprocess.check_output(["ifconfig",interface])
 		pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
 		output1 = output.decode()
 		ip = pattern.search(output1)[0]
 		return ip
+	except:
+		return None
 
 def restore():
 		# Restore the MAC before quitting.
@@ -68,7 +71,7 @@ def ip_table():
 		ip = get_current_ip(k)
 		if ip and mac:
 			t.add_row([k,mac,ip])
-		elif mac:
+		elif mac and ip == None:
 			t.add_row([k,mac,f"{Fore.YELLOW}No IP assigned{Style.RESET_ALL}"])
 		elif ip:
 			t.add_row([k,f"{Fore.YELLOW}No MAC assigned{Style.RESET_ALL}",ip])
