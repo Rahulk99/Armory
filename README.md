@@ -23,6 +23,10 @@ The project includes five modules, each designed to perform a specific function:
 
 The Armory project is intended for use by security professionals and researchers to test the security of networks and identify vulnerabilities.
 
+## Disclaimer
+The Armory project is intended for use by security professionals and researchers to test the security of networks and identify vulnerabilities. 
+The creators of The Armory are not responsible for any illegal or unethical use of the tool. Use at your own risk.
+
 ## Installation
 To install Armory, clone this repository using Git:
 
@@ -41,3 +45,21 @@ All contributions will be reviewed and evaluated based on their quality and rele
 
 ## License
 The Armory project is licensed under the MIT License. See the LICENSE file for more details.
+
+
+## Acknowledgments
+We would also like to acknowledge the following resources that were used in the development of Armory:
+
+The Python programming language and its vast library of packages.
+The Wireshark network protocol analyzer for packet capturing and analysis.
+The Scapy packet manipulation tool for building custom packets.
+The Python ARP library for working with ARP packets.
+
+## Thank You!
+Thank you for using the Armory suite! We hope it has been helpful in testing and securing your network. If you have any feedback or suggestions for improvements, please don't hesitate to reach out to us.
+
+You can also stay up-to-date on the latest Armory news and updates by following me on LinkedIn. I regularly share insights and tips on network security and penetration testing.
+
+[Rahul kumar](https://www.linkedin.com/in/rahul-kumar8176/)
+
+Thank you again for using Armory, and we hope it helps you secure your networks!
