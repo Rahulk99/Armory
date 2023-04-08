@@ -29,7 +29,7 @@ def print_banner():
     print(f"{Fore.LIGHTBLACK_EX}{banner}{Style.RESET_ALL}") 
 
 def main():
-    print(f"{Fore.BLUE}[***] Welcone to ARMORY [***] {Style.RESET_ALL}")
+    print(f"{Fore.BLUE}[***] Welcome to ARMORY [***] {Style.RESET_ALL}")
     try:
         while True:
             print_banner()
