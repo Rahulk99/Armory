@@ -117,7 +117,7 @@ def process_packet(packet):
 
 def redirect_data():
     while True:
-        ip_redirect = input("[+] Please Enter the ip address where you want to rediect the target [-]  :  ")
+        ip_redirect = input("[+] Please Enter the ip address where you want to redirect the target [-]  :  ")
         if ipv4_check(ip_redirect):
             global ip
             ip = ip_redirect
