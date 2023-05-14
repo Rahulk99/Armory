@@ -34,12 +34,12 @@ def main():
         while True:
             print_banner()
             print(f"{Fore.BLUE}[***] Please Select Your Choice [***]\n{Style.RESET_ALL}")
-            print("1.  [*]  Mac Changer             [*] ")
-            print("2.  [*]  Network Scanner         [*] ")
-            print("3.  [*]  Arp Spoofer             [*] ")
-            print("4.  [*]  Packet Sniffer          [*] ")
-            print("5.  [*]  DNS Spoofer             [*] ")
-            print("\n0.  [*]  To exit the program     [*] ")
+            print("1.  [*]  Mac Changer              [*] ")
+            print("2.  [*]  Network And Port Scanner [*] ")
+            print("3.  [*]  Arp Spoofer              [*] ")
+            print("4.  [*]  Packet Sniffer           [*] ")
+            print("5.  [*]  DNS Spoofer              [*] ")
+            print("\n0.  [*]  To exit the program      [*] ")
             choice = input(f"{Fore.BLUE}\n[+] Please Enter Your Choice : {Style.RESET_ALL}")
             call_Mac_Changer() if choice=="1" else call_Netowork_Scanner() if choice=="2" else call_Arp_Spoofer() if choice=="3" else call_packet_sniffer() if choice=="4" else call_dns_spoofer() if choice=="5" else exit() if choice=="0" else print(f"{Fore.RED}\n[!] Please Enter valid choice{Style.RESET_ALL}")
     except KeyboardInterrupt:
