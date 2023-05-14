@@ -75,6 +75,50 @@ def scan(ipaddress):
    print("[+] No of Node present on Network : ", len(answered))
    print_result_node(answered)
 
+def scan_network(ip_network, num_threads=10):
+    network = ipaddress.ip_network(ip_network, strict=False)
+    reachable_ips = []
+    reachable_ips_lock = threading.Lock()
+    queue_ips = Queue()
+
+    def worker():
+        while True:
+            ip = queue_ips.get()
+            if ip is None:
+                break
+            command = ["ping", "-c", "1", "-W", "1", str(ip)]
+            status = subprocess.call(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if status == 0:
+                with reachable_ips_lock:
+                    reachable_ips.append(str(ip))
+            queue_ips.task_done()
+
+    threads = []
+    for i in range(num_threads):
+        t = threading.Thread(target=worker)
+        t.start()
+        threads.append(t)
+
+    for ip in network.hosts():
+        queue_ips.put(ip)
+    queue_ips.join()
+
+    for i in range(num_threads):
+        queue_ips.put(None)
+    for t in threads:
+        t.join()
+
+    return reachable_ips
+
+def print_table(ip_list):
+    if ip_list:
+        table = PrettyTable([f"{Fore.GREEN}Reachable IPs{Style.RESET_ALL}"])
+        for ip in ip_list:
+            table.add_row([ip])
+        print(table)
+    else:
+        print(f"{Fore.LIGHTYELLOW_EX}No reachable IP addresses found in the network.{Fore.RESET}")
+
 
 def print_result_node(answered):
     t = PrettyTable([f'{Fore.GREEN}IP Address',f'Mac Address{Style.RESET_ALL}'])
@@ -175,7 +219,18 @@ def scanmain():
         while True:
             ip = input(str("[+] Please Enter Ip/Cider Address : "))
             if (is_ipv4(ip) == "Scan"):
-                scan(ip)
+                technique = int(input("[+] Select technique to use (1 for ping, 2 for ARP): "))
+                if technique == 1:
+                    print(f"{Fore.GREEN}Scanning with ping...{Fore.RESET}")
+                    reachable_ips = scan_network(ip)
+                    print_table(reachable_ips)
+                    print(f"{Fore.GREEN}Ping scan complete.{Fore.RESET}")
+                elif technique == 2:
+                    print(f"{Fore.GREEN}Scanning with ARP...{Fore.RESET}")
+                    scan(ip)
+                    print(f"{Fore.GREEN}ARP scan complete.{Fore.RESET}")
+                else:
+                    print("Enter a valid ip Address Or technique")
                 break
             elif(is_ipv4(ip) == "Port"):
                     port_scan_main(ip)
