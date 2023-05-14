@@ -5,7 +5,7 @@ from colorama import Style
 
 import scapy.all
 import time
-from Networkscanner import scan , is_ipv4
+from Networkscanner import scan , is_ipv4 ,scan_network,print_table
 
 
 default_ip_forward_value = 0
@@ -99,7 +99,7 @@ def restore(destination_ip,source_ip):
 
 def arp_spoof():
     while True:
-        target_ip = input("[+] Please Entern the ip address : ")
+        target_ip = input("[+] Please Enter Target ip address : ")
         if (is_ipv4(target_ip)!="Port"):
             print(f"{Fore.YELLOW}[!] Please enter a valid ip address{Style.RESET_ALL}")
         else :
@@ -109,15 +109,14 @@ def arp_spoof():
         print(f"{Fore.YELLOW}[!] Target Is not Up!{Style.RESET_ALL}")
         return
     while True:
-        router_ip = input("[+] Enter router ip address : ")
+        router_ip = input("[+] Enter router ip address ( You can use route commnad ) : ")
         if (is_ipv4(router_ip)!="Port"):
             print(f"{Fore.YELLOW}[!] Please enter a valid ip address{Style.RESET_ALL}")
-        else:
+        result = host_up(router_ip)
+        if result:
             break
-    result = host_up(router_ip)
-    if not result:
-        print(f"{Fore.YELLOW}[!] Router / Gateway is Down  []  Please check gateway ip address{Style.RESET_ALL}")
-        return
+        if not result:
+            print(f"{Fore.YELLOW}[!] Router / Gateway is Down  []  Please check gateway ip address{Style.RESET_ALL}")
     #enable ip forwarding
     ipv4_forwarding()
     #counter for packet send
@@ -157,7 +156,18 @@ def arp_spoofing_main():
             while True:
                 ip = input("[+] Enter network cider notation : ")
                 if(is_ipv4(ip)=="Scan"):
-                    print(scan(ip))
+                    technique = int(input("[+] Select technique to use (1 for ping, 2 for ARP): "))
+                    if technique == 1:
+                            print(f"{Fore.GREEN}Scanning with ping...{Fore.RESET}")
+                            reachable_ips = scan_network(ip)
+                            print_table(reachable_ips)
+                            print(f"{Fore.GREEN}Ping scan complete.{Fore.RESET}")
+                    elif technique == 2:
+                            print(f"{Fore.GREEN}Scanning with ARP...{Fore.RESET}")
+                            scan(ip)
+                            print(f"{Fore.GREEN}ARP scan complete.{Fore.RESET}")
+                    else:
+                            print("Enter a valid ip Address Or technique")
                     arp_spoof()
                     break
                 else:

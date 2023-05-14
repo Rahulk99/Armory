@@ -54,6 +54,8 @@ def define_queue_iptable():
         queue.run()
     except KeyboardInterrupt:
         reset_setting()
+    except:
+        pass
 
 def reset_setting():
     print(f"{Fore.YELLOW}\n[*] Reseting Ip Tables [*]")
