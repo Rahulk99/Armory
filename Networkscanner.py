@@ -215,7 +215,7 @@ def scanmain():
 
     try:
         print(f"{Fore.YELLOW}[*] If a single IP address is given, the tool will perform a port scan.")
-        print(f"[*] If a single IP address is given, the tool will perform a host discovery.{Style.RESET_ALL}\n")
+        print(f"[*] If a CIDR Notation is given, the tool will perform a host discovery.{Style.RESET_ALL}\n")
         while True:
             ip = input(str("[+] Please Enter Ip/Cider Address : "))
             if (is_ipv4(ip) == "Scan"):
